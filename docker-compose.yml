@@ -1,0 +1,35 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: agendamento-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "SenhaForte@123"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SenhaForte@123" -C -Q "SELECT 1" || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  api:
+    build:
+      context: .
+      dockerfile: AgendamentoHospitalarInteligente.Api/Dockerfile
+    container_name: agendamento-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=AgendamentoHospitalar;User Id=sa;Password=SenhaForte@123;TrustServerCertificate=True"
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+volumes:
+  sqlserver-data:

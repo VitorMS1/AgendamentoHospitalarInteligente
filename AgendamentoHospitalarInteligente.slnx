@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Frontend/" />
+  <Folder Name="/src/">
+    <Project Path="AgendamentoHospitalarInteligente.Api/AgendamentoHospitalarInteligente.Api.csproj" Id="ba0f34af-279d-46fd-8527-58bc9d91ee51" />
+    <Project Path="AgendamentoHospitalarInteligente.Application/AgendamentoHospitalarInteligente.Application.csproj" Id="73966459-22f8-4ec0-b778-2f16d6bab3e0" />
+    <Project Path="AgendamentoHospitalarInteligente.Domain/AgendamentoHospitalarInteligente.Domain.csproj" Id="7646b64c-b29a-4c7b-b503-8adf4cdc9c81" />
+    <Project Path="AgendamentoHospitalarInteligente.Infrastructure/AgendamentoHospitalarInteligente.Infrastructure.csproj" Id="679cdada-45b3-4614-a761-88d2f984c6dc" />
+  </Folder>
+  <Folder Name="/desktop/">
+    <Project Path="AgendamentoHospitalarInteligente.Desktop/AgendamentoHospitalarInteligente.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AgendamentoHospitalarInteligente.Tests/AgendamentoHospitalarInteligente.Tests.csproj" />
+  </Folder>
+</Solution>
