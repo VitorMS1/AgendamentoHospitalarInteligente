@@ -1,10 +1,10 @@
-# ====== Agendamento Hospitalar
+# Agendamento Hospitalar
 
  Sistema de agendamento que aloca pacientes em consultas, otimizando o uso do tempo disponivel dos medicos.
 
 ## Sobre o Projeto
 
- O sistema recebe uma lista de medicos com seus horários disponíveis e uma lista de solicitacoes de pacientes (com duracao e prioridade), e gera automaticamente uma agenda otimizada. Alem da geracao inicial, permite encaixes posteriores com reorganizacao automática das consultas existentes.
+ O sistema recebe uma lista de medicos com seus horários disponíveis e uma lista de solicitacoes de pacientes (com duracao e prioridade), e gera automaticamente uma agenda otimizada utilizando um algorítmo guloso. Alem da geracao inicial, permite encaixes posteriores com reorganizacao automática das consultas existentes.
 
 - Alocar pacientes nos medicos disponiveis priorizando por urgencia e buscando o horário  mais cedo entre todos os medicos
 - Encaixar um novo paciente, reorganizando consultas

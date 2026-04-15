@@ -42,7 +42,7 @@ namespace AgendamentoHospitalarInteligente.Domain.Entities
         /// Aloca uma lista de pacientes nos médicos disponíveis, buscando o melhor horário para cada um.
         /// Ordena por prioridade (desc) e duração (asc). Quem não couber vai para não alocados.
         /// </summary>
-        public void AlocarPacientes(IEnumerable<PacienteNaoAlocado> solicitacoes, TimeOnly agora)
+        private void AlocarPacientes(IEnumerable<PacienteNaoAlocado> solicitacoes, TimeOnly agora)
         {
             DomainValidationException.When(solicitacoes == null || !solicitacoes.Any(), "A lista de solicitações não pode ser vazia ou nula.");
 
@@ -105,7 +105,8 @@ namespace AgendamentoHospitalarInteligente.Domain.Entities
             foreach (var consulta in consultasRemovidas)
                 _pacientesNaoAlocados.Add(PacienteNaoAlocado.Criar(consulta.PacienteNome, consulta.Duracao, consulta.Prioridade));
 
-            AlocarPacientes(_pacientesNaoAlocados, agora);
+            var paraRealocar = _pacientesNaoAlocados.ToList();
+            AlocarPacientes(paraRealocar, agora);
         }
 
         private int EncontrarIndiceInsercao(Prioridade prioridade, TimeSpan duracao)

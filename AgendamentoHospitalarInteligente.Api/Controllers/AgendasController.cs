@@ -16,37 +16,37 @@ namespace AgendamentoHospitalarInteligente.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ObterPorId(int id)
+        public async Task<IActionResult> ObterPorId(int id, CancellationToken cancellationToken)
         {
-            var resultado = await _useCase.ObterPorIdAsync(id);
+            var resultado = await _useCase.ObterPorIdAsync(id, cancellationToken);
             return Ok(resultado);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ObterPaginado([FromQuery] int pagina = 1, [FromQuery] int tamanhoPagina = 10)
+        public async Task<IActionResult> ObterPaginado([FromQuery] int pagina = 1, [FromQuery] int tamanhoPagina = 10, CancellationToken cancellationToken = default)
         {
-            var resultado = await _useCase.ObterPaginadoAsync(pagina, tamanhoPagina);
+            var resultado = await _useCase.ObterPaginadoAsync(pagina, tamanhoPagina, cancellationToken);
             return Ok(resultado);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criar([FromBody] CriarAgendaRequest request)
+        public async Task<IActionResult> Criar([FromBody] CriarAgendaRequest request, CancellationToken cancellationToken)
         {
-            var resultado = await _useCase.CriarAsync(request);
+            var resultado = await _useCase.CriarAsync(request, cancellationToken);
             return CreatedAtAction(nameof(ObterPorId), new { id = resultado.Id }, resultado);
         }
 
         [HttpPost("{id}/encaixar")]
-        public async Task<IActionResult> Encaixar(int id, [FromBody] EncaixarConsultaRequest request)
+        public async Task<IActionResult> Encaixar(int id, [FromBody] EncaixarConsultaRequest request, CancellationToken cancellationToken)
         {
-            var resultado = await _useCase.EncaixarAsync(id, request);
+            var resultado = await _useCase.EncaixarAsync(id, request, cancellationToken);
             return Ok(resultado);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Remover(int id)
+        public async Task<IActionResult> Remover(int id, CancellationToken cancellationToken)
         {
-            await _useCase.RemoverAsync(id);
+            await _useCase.RemoverAsync(id, cancellationToken);
             return NoContent();
         }
     }

@@ -25,18 +25,18 @@ namespace AgendamentoHospitalarInteligente.Application.UseCases.MedicoModelo
             _atualizarValidator = atualizarValidator;
         }
 
-        public async Task<MedicoModeloResponse> ObterPorIdAsync(int id)
+        public async Task<MedicoModeloResponse> ObterPorIdAsync(int id, CancellationToken cancellationToken = default)
         {
             var medicoModelo = ResourceNotFoundException.WhenNull(
-                await _medicoModeloRepository.ObterPorIdAsync(id),
+                await _medicoModeloRepository.ObterPorIdAsync(id, cancellationToken),
                 $"Médico modelo com Id {id} não encontrado.");
 
             return medicoModelo.ToResponse();
         }
 
-        public async Task<PagedResult<MedicoModeloResponse>> ObterPaginadoAsync(int pagina, int tamanhoPagina)
+        public async Task<PagedResult<MedicoModeloResponse>> ObterPaginadoAsync(int pagina, int tamanhoPagina, CancellationToken cancellationToken = default)
         {
-            var (itens, totalRegistros) = await _medicoModeloRepository.ObterPaginadoAsync(pagina, tamanhoPagina);
+            var (itens, totalRegistros) = await _medicoModeloRepository.ObterPaginadoAsync(pagina, tamanhoPagina, cancellationToken);
 
             return new PagedResult<MedicoModeloResponse>
             {
@@ -47,43 +47,43 @@ namespace AgendamentoHospitalarInteligente.Application.UseCases.MedicoModelo
             };
         }
 
-        public async Task<IEnumerable<MedicoModeloResponse>> BuscarPorNomeAsync(string filtro, int limite)
+        public async Task<IEnumerable<MedicoModeloResponse>> BuscarPorNomeAsync(string filtro, int limite, CancellationToken cancellationToken = default)
         {
-            var itens = await _medicoModeloRepository.BuscarPorNomeAsync(filtro, limite);
+            var itens = await _medicoModeloRepository.BuscarPorNomeAsync(filtro, limite, cancellationToken);
             return itens.Select(m => m.ToResponse());
         }
 
-        public async Task<MedicoModeloResponse> CriarAsync(CriarMedicoModeloRequest request)
+        public async Task<MedicoModeloResponse> CriarAsync(CriarMedicoModeloRequest request, CancellationToken cancellationToken = default)
         {
-            await _criarValidator.ValidateAndThrowAsync(request);
+            await _criarValidator.ValidateAndThrowAsync(request, cancellationToken);
 
             var horarios = request.HorariosDisponiveis.Select(h => Horario.CriarDeString(h.Inicio, h.Fim)).ToList();
             var medicoModelo = Domain.Entities.MedicoModelo.Criar(request.Nome, horarios);
-            await _medicoModeloRepository.AdicionarAsync(medicoModelo);
+            await _medicoModeloRepository.AdicionarAsync(medicoModelo, cancellationToken);
             return medicoModelo.ToResponse();
         }
 
-        public async Task<MedicoModeloResponse> AtualizarAsync(int id, AtualizarMedicoModeloRequest request)
+        public async Task<MedicoModeloResponse> AtualizarAsync(int id, AtualizarMedicoModeloRequest request, CancellationToken cancellationToken = default)
         {
-            await _atualizarValidator.ValidateAndThrowAsync(request);
+            await _atualizarValidator.ValidateAndThrowAsync(request, cancellationToken);
 
             var medicoModelo = ResourceNotFoundException.WhenNull(
-                await _medicoModeloRepository.ObterPorIdAsync(id),
+                await _medicoModeloRepository.ObterPorIdAsync(id, cancellationToken),
                 $"Médico modelo com Id {id} não encontrado.");
 
             var horarios = request.HorariosDisponiveis.Select(h => Horario.CriarDeString(h.Inicio, h.Fim)).ToList();
             medicoModelo.Atualizar(request.Nome, horarios);
-            await _medicoModeloRepository.AtualizarAsync(medicoModelo);
+            await _medicoModeloRepository.AtualizarAsync(medicoModelo, cancellationToken);
             return medicoModelo.ToResponse();
         }
 
-        public async Task RemoverAsync(int id)
+        public async Task RemoverAsync(int id, CancellationToken cancellationToken = default)
         {
             var medicoModelo = ResourceNotFoundException.WhenNull(
-                await _medicoModeloRepository.ObterPorIdAsync(id),
+                await _medicoModeloRepository.ObterPorIdAsync(id, cancellationToken),
                 $"Médico modelo com Id {id} não encontrado.");
 
-            await _medicoModeloRepository.RemoverAsync(medicoModelo);
+            await _medicoModeloRepository.RemoverAsync(medicoModelo, cancellationToken);
         }
     }
 }
